@@ -1,0 +1,53 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!-- SE uses standard .NET Framework 4.8 -->
+    <TargetFramework>net48</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <!-- Speeds up VS Code loading by skipping heavy generation -->
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <!-- Automatically locate Steam and Space Engineers on Windows -->
+  <PropertyGroup>
+    <!-- <SteamPath>$([MSBuild]::GetRegistryValueFromView('HKEY_CURRENT_USER\SOFTWARE\Valve\Steam', 'SteamPath', null, RegistryView.Registry64, RegistryView.Registry32))</SteamPath>
+    <SEBinPath>$(SteamPath)\steamapps\common\SpaceEngineers\Bin64</SEBinPath> -->
+    <SEBinPath>D:\games\steam\steamapps\common\SpaceEngineers\Bin64</SEBinPath>
+  </PropertyGroup>
+
+  <!-- Core References for VRage, Sandbox, and SpaceEngineers -->
+  <ItemGroup>
+    <Reference Include="VRage">
+      <HintPath>$(SEBinPath)\VRage.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="VRage.Game">
+      <HintPath>$(SEBinPath)\VRage.Game.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="VRage.Math">
+      <HintPath>$(SEBinPath)\VRage.Math.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="VRage.Library">
+      <HintPath>$(SEBinPath)\VRage.Library.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Sandbox.Game">
+      <HintPath>$(SEBinPath)\Sandbox.Game.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Sandbox.Common">
+      <HintPath>$(SEBinPath)\Sandbox.Common.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="SpaceEngineers.Game">
+      <HintPath>$(SEBinPath)\SpaceEngineers.Game.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="SpaceEngineers.ObjectBuilders">
+      <HintPath>$(SEBinPath)\SpaceEngineers.ObjectBuilders.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+</Project>
