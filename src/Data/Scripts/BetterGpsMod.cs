@@ -117,8 +117,8 @@ namespace BetterGps
                 return;
             }
 
-            string[] query = parseCsv(messageArgs[1]);
             Color color = GetEnumValue<Color>(messageArgs[0]);
+            string[] query = parseCsv(messageArgs[1]);
 
             service.Color(query, color);
         }
@@ -257,7 +257,48 @@ namespace BetterGps
             }
         }
 
-        public void Color(string[] query, Color color) { }
+        public void Color(string[] queries, Color color)
+        {
+            foreach (var marker in GetGpsMarkers())
+            {
+                foreach (var query in queries)
+                {
+                    if (!DoesMatchQuery(marker, query))
+                    {
+                        continue;
+                    }
+
+                    switch (color)
+                    {
+                        case BetterGps.Color.RED:
+                            marker.GPSColor = VRageMath.Color.Red;
+                            break;
+                        case BetterGps.Color.ORANGE:
+                            marker.GPSColor = VRageMath.Color.Orange;
+                            break;
+                        case BetterGps.Color.YELLOW:
+                            marker.GPSColor = VRageMath.Color.Yellow;
+                            break;
+                        case BetterGps.Color.GREEN:
+                            marker.GPSColor = VRageMath.Color.Green;
+                            break;
+                        case BetterGps.Color.BLUE:
+                            marker.GPSColor = VRageMath.Color.Blue;
+                            break;
+                        case BetterGps.Color.INDIGO:
+                            marker.GPSColor = VRageMath.Color.Indigo;
+                            break;
+                        case BetterGps.Color.VIOLET:
+                            marker.GPSColor = VRageMath.Color.Violet;
+                            break;
+                    }
+                    MyAPIGateway.Session.GPS.ModifyGps(
+                        MyAPIGateway.Session.LocalHumanPlayer.IdentityId,
+                        marker
+                    );
+                }
+            }
+        }
 
         private bool DoesMatchQuery(IMyGps marker, string query)
         {
