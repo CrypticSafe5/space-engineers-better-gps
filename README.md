@@ -18,3 +18,8 @@ Files of note:
 | Search  | {near/far/all} {csv query}                               | Show the nearest, furthest, or all of the gps markers that match the comma separated query |
 | Show    | {on/off}                                                 | Toggle off the current set of gps markers or on the last known set of active gps markers   |
 | Color   | {red/orange/yellow/green/blue/indigo/violet} {csv query} | Color all the gps markers that match the csv query                                         |
+
+# Planned features
+
+- G-screen to show distances enabling mass gui use
+- Persistent query polling markers updating while moving around

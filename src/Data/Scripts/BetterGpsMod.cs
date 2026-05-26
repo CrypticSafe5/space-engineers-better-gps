@@ -41,7 +41,14 @@ namespace BetterGps
 
     public class Chat
     {
+        private class LastSearch
+        {
+            public string[] query;
+            public Distance distance;
+        }
+
         private Service service;
+        private LastSearch lastSearch = new LastSearch();
 
         public void Handle(string message, ref bool sendToOthers)
         {
@@ -97,6 +104,8 @@ namespace BetterGps
 
             Distance distance = GetEnumValue<Distance>(messageArgs[0]);
             string[] query = parseCsv(messageArgs[1]);
+            lastSearch.distance = distance;
+            lastSearch.query = query;
 
             service.Search(query, distance);
         }
@@ -123,7 +132,7 @@ namespace BetterGps
 
             Toggle value = GetEnumValue<Toggle>(messageArgs[0]);
 
-            service.Show(value);
+            service.Show(value, lastSearch.distance, lastSearch.query);
         }
 
         private string[] parseCsv(string value)
@@ -228,7 +237,25 @@ namespace BetterGps
             }
         }
 
-        public void Show(Toggle value) { }
+        public void Show(Toggle value, Distance lastSerachDistance, string[] lastSearchArgs)
+        {
+            switch (value)
+            {
+                case Toggle.ON:
+                    if (lastSearchArgs == null || lastSerachDistance == null)
+                    {
+                        return;
+                    }
+                    Search(lastSearchArgs, lastSerachDistance);
+                    break;
+                case Toggle.OFF:
+                    foreach (var marker in GetGpsMarkers())
+                    {
+                        SetShowOnHud(marker, false);
+                    }
+                    break;
+            }
+        }
 
         public void Color(string[] query, Color color) { }
 
@@ -270,7 +297,6 @@ namespace BetterGps
                 MyAPIGateway.Session.LocalHumanPlayer.IdentityId,
                 gpsMarkers
             );
-            var strList = string.Join(", ", gpsMarkers.Select(e => e.Name).ToArray());
             return gpsMarkers;
         }
 
